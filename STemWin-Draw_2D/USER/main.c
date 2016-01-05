@@ -113,12 +113,41 @@ void alpha(void)
 	GUI_FillRect(120,20,170,89);
 	GUI_EnableAlpha(0);
 }
+void line(void)
+{
+	u8 i,Alpha;
+	GUI_DrawLine(10,10,210,10);
+	GUI_DrawHLine(20,10,210);
+	GUI_DrawVLine(220,20,210);
+	
+	GUI_SetLineStyle(GUI_LS_DASH);
+	GUI_DrawLine(10,30,210,30);
+	GUI_SetLineStyle(GUI_LS_SOLID);
+	
+	
+	GUI_SetColor(GUI_BLUE);
+	GUI_FillCircle(100, 50, 49);
+	GUI_EnableAlpha(1);
+	GUI_SetColor(GUI_YELLOW);
+	for (i = 0; i < 100; i++) {
+		Alpha = (i * 255 / 100);
+		GUI_SetAlpha(Alpha);
+		GUI_DrawHLine(i+100, 100 - i, 100 + i);
+	}	
+	GUI_SetAlpha(0x80);
+	GUI_SetColor(GUI_MAGENTA);
+	GUI_SetFont(&GUI_Font24B_ASCII);
+	GUI_SetTextMode(GUI_TM_TRANS);
+	GUI_DispStringHCenterAt("Alphablending", 100, 130);
+	GUI_EnableAlpha(0);
+}
 int main(void)
 {
 	BSP_Init();
 //	main_ui();
-	disp();
-	alpha();
+//	disp();
+//	alpha();
+	line();
 	OSInit();
 	OSTaskCreate(start_task,(void *)0,(OS_STK *)&START_TASK_STK[START_STK_SIZE-1],START_TASK_PRIO);//创建起始任务
 	OSStart();

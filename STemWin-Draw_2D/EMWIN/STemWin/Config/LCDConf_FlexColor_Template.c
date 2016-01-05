@@ -150,7 +150,8 @@ static void LcdWriteDataMultiple(U16 * pData, int NumItems) {
 static void LcdReadDataMultiple(U16 * pData, int NumItems) {
   while (NumItems--) {
     // ... TBD by user
-		*pData++ = LCD_ReadReg(R34);
+//		*pData++ = LCD_ReadReg(R34);
+		*pData++ = LCD_RD_DATA();
   }
 }
 
@@ -176,7 +177,7 @@ void LCD_X_Config(void) {
   //
   // Set display driver and color conversion
   //
-  pDevice = GUI_DEVICE_CreateAndLink(GUIDRV_FLEXCOLOR, GUICC_565, 0, 0);
+  pDevice = GUI_DEVICE_CreateAndLink(GUIDRV_FLEXCOLOR, GUICC_565, 0, 0);//创建显示驱动控件
   //
   // Display driver configuration, required for Lin-driver
   //

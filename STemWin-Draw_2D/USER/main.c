@@ -89,12 +89,36 @@ void disp(void)
 	GUI_DrawPixel(120,220);//绘制像素点
 	GUI_DrawPoint(130,240);//以给定画笔大小绘制一个点
 }
-
+void alpha(void)
+{
+	GUI_SetBkColor(GUI_WHITE);
+	GUI_Clear();
+	GUI_SetColor(GUI_BLACK);
+	GUI_DispStringHCenterAt("ALIENEK ALPHA DISPLAY", 120, 1);
+	GUI_SetFont(GUI_FONT_16_ASCII);
+	
+	GUI_EnableAlpha(1);
+	GUI_DispStringHCenterAt("aaaaasadadadadaAlphablending that is ok", 120, 61);
+	
+	GUI_SetAlpha(40);//
+	GUI_SetColor(GUI_RED);
+	GUI_FillRect(0,20,50,89);
+	
+	GUI_SetAlpha(80);
+	GUI_SetColor(GUI_GREEN);
+	GUI_FillRect(60,20,110,89);
+	
+	GUI_SetAlpha(100);
+	GUI_SetColor(GUI_BLUE);
+	GUI_FillRect(120,20,170,89);
+	GUI_EnableAlpha(0);
+}
 int main(void)
 {
 	BSP_Init();
 //	main_ui();
 	disp();
+	alpha();
 	OSInit();
 	OSTaskCreate(start_task,(void *)0,(OS_STK *)&START_TASK_STK[START_STK_SIZE-1],START_TASK_PRIO);//创建起始任务
 	OSStart();
@@ -117,8 +141,6 @@ void led_task(void *pdata)
 	{
 		LED0 = !LED0;
 		OSTimeDlyHMSM(0,0,0,500);
-		GUI_DispDecAt(GUI_GetDispPosX(),0,0,3);
-		GUI_DispDecAt(GUI_GetDispPosY(),0,6,3);
 	}
 }
 void touch_task(void *pdata)

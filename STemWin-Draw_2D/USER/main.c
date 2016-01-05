@@ -68,14 +68,26 @@ void main_ui(void)
 }
 void disp(void)
 {
-	GUI_ClearRect(5,20,95,110); 
+	GUI_SetColor(GUI_RED);
+	GUI_SetBkColor(GUI_BLUE);
+	GUI_Clear();
+	GUI_SetBkColor(GUI_YELLOW);
+	GUI_ClearRect(10,20,30,110); //填充背景色
 	GUI_SetBkColor(GUI_BLUE);
 
-	GUI_DrawGradientH(10, 20, 80, 110, GUI_GREEN, GUI_CYAN);//绘制用水平颜色梯度填充的矩形
+
+	GUI_DrawGradientH(40, 20, 90, 110, GUI_GREEN, GUI_CYAN);//绘制用水平颜色梯度填充的矩形
 	GUI_DrawGradientRoundedV(100, 20, 200, 110,5, GUI_YELLOW, GUI_RED);//绘制用垂直颜色梯度填充的圆角矩形
 	GUI_DrawRect(5,115,95,205);
-	GUI_FillRect(100,115,190,205);//填充矩形
-	GUI_FillRoundedRect(10,210,100,300,10);//绘制圆角矩形
+	GUI_FillRect(100,115,190,205);//填充矩形，会填充颜色
+	GUI_FillRoundedRect(10,210,100,300,10);//绘制圆角矩形,会填充颜色
+
+	GUI_DrawRoundedFrame(140,250,150,280,5,2);//绘制圆角框，指定边框大小,不填充颜色
+	GUI_InvertRect(160,250,180,280);//倒转矩形，颜色倒转
+	
+	GUI_SetPenSize(5);
+	GUI_DrawPixel(120,220);//绘制像素点
+	GUI_DrawPoint(130,240);//以给定画笔大小绘制一个点
 }
 
 int main(void)
@@ -105,6 +117,8 @@ void led_task(void *pdata)
 	{
 		LED0 = !LED0;
 		OSTimeDlyHMSM(0,0,0,500);
+		GUI_DispDecAt(GUI_GetDispPosX(),0,0,3);
+		GUI_DispDecAt(GUI_GetDispPosY(),0,6,3);
 	}
 }
 void touch_task(void *pdata)

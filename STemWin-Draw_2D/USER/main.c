@@ -17,6 +17,7 @@
 //广州市星翼电子科技有限公司 
 extern void _MY_GetTouchPos(void);
 
+
 /////////////////////////UCOSII任务设置///////////////////////////////////
 //START 任务
 #define START_TASK_PRIO      		20        //开始任务的优先级设置为最低
@@ -120,7 +121,7 @@ void line(void)
 	GUI_DrawHLine(20,10,210);
 	GUI_DrawVLine(220,20,210);
 	
-	GUI_SetLineStyle(GUI_LS_DASH);
+	GUI_SetLineStyle(GUI_LS_DOT);//仅用于画笔大小为1
 	GUI_DrawLine(10,30,210,30);
 	GUI_SetLineStyle(GUI_LS_SOLID);
 	
@@ -142,13 +143,68 @@ void line(void)
 	GUI_SetTextMode(GUI_TM_XOR);
 	GUI_DispStringHCenterAt("Alphablending", 100, 30);
 }
+void polygon(void)
+{
+	int i;
+	const GUI_POINT aPoints[]={
+{40,20},
+{0,20},
+{20,0}
+};
+const GUI_POINT aPoints1[]={
+{0,20},
+{40,20},
+{20,0}
+};
+const GUI_POINT aPointArrow[]={
+{ 0, -5},
+{-40, -35},
+{-10, -25},
+{-10, -85},
+{ 10, -85},
+{ 10, -25},
+{ 40, -35},
+};
+GUI_POINT aEnlargedPoints[GUI_COUNTOF(aPoints)];    //
+GUI_POINT aMagnifiedPoints[GUI_COUNTOF(aPoints1)];
+
+
+GUI_SetBkColor(GUI_BLUE);    //
+GUI_Clear();
+GUI_SetColor(GUI_YELLOW);
+GUI_SetFont(&GUI_Font24_ASCII);
+GUI_DispStringHCenterAt("ALIENTEK 2D DISPALY",120,10);
+GUI_SetColor(GUI_RED);
+GUI_SetFont(&GUI_Font16_ASCII);
+GUI_SetBkColor(GUI_GREEN);
+GUI_ClearRect(10,50,100,100);  //
+GUI_SetBkColor(GUI_BLUE);    //
+GUI_DrawGradientH(110,50,210,100,0X4117BB,0XC6B6F5);
+GUI_DrawGradientV(10,110,100,150,0X4117BB,0XC6B6F5);
+GUI_DrawGradientRoundedH(120,120,150,150,5,0X4117BB,0XC6B6F5);
+GUI_DrawGradientRoundedV(10,160,120,200,5,0X4117BB,0XC6B6F5); 
+GUI_DrawRect(160,120,200,160);    
+GUI_FillRect(150,170,180,200);    //
+GUI_SetPenSize(5);        //
+GUI_DrawLine(10,160,110,260);      //
+for(i=0;i<50;i+=3) GUI_DrawCircle(170,220,i);    //
+GUI_FillCircle(200,130,10);         
+GUI_SetPenSize(2);
+GUI_SetColor(GUI_CYAN);
+GUI_DrawEllipse(50,240,40,20);
+GUI_SetColor(GUI_MAGENTA);
+GUI_FillEllipse(50,250,30,10);  
+
+}
 int main(void)
 {
 	BSP_Init();
 //	main_ui();
 //	disp();
 //	alpha();
-	line();
+//	line();
+	polygon();
+
 	OSInit();
 	OSTaskCreate(start_task,(void *)0,(OS_STK *)&START_TASK_STK[START_STK_SIZE-1],START_TASK_PRIO);//创建起始任务
 	OSStart();

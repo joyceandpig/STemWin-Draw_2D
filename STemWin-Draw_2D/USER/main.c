@@ -66,10 +66,23 @@ void main_ui(void)
 	GUI_DrawRoundedRect(0,0,200,200,5);
 	GUI_DrawRoundedFrame(2,2,180,20,5,2);
 }
+void disp(void)
+{
+	GUI_ClearRect(5,20,95,110); 
+	GUI_SetBkColor(GUI_BLUE);
+
+	GUI_DrawGradientH(10, 20, 80, 110, GUI_GREEN, GUI_CYAN);//绘制用水平颜色梯度填充的矩形
+	GUI_DrawGradientRoundedV(100, 20, 200, 110,5, GUI_YELLOW, GUI_RED);//绘制用垂直颜色梯度填充的圆角矩形
+	GUI_DrawRect(5,115,95,205);
+	GUI_FillRect(100,115,190,205);//填充矩形
+	GUI_FillRoundedRect(10,210,100,300,10);//绘制圆角矩形
+}
+
 int main(void)
 {
 	BSP_Init();
 //	main_ui();
+	disp();
 	OSInit();
 	OSTaskCreate(start_task,(void *)0,(OS_STK *)&START_TASK_STK[START_STK_SIZE-1],START_TASK_PRIO);//创建起始任务
 	OSStart();

@@ -126,20 +126,21 @@ void line(void)
 	
 	
 	GUI_SetColor(GUI_BLUE);
+	GUI_SetBkColor(GUI_BLACK);
 	GUI_FillCircle(100, 50, 49);
-	GUI_EnableAlpha(1);
 	GUI_SetColor(GUI_YELLOW);
+	GUI_EnableAlpha(1);
 	for (i = 0; i < 100; i++) {
 		Alpha = (i * 255 / 100);
 		GUI_SetAlpha(Alpha);
-		GUI_DrawHLine(i+100, 100 - i, 100 + i);
+		GUI_DrawHLine(i+0, 100 - i, 100 + i);
 	}	
-	GUI_SetAlpha(0x80);
+	GUI_SetAlpha(0);
+	GUI_EnableAlpha(0);
 	GUI_SetColor(GUI_MAGENTA);
 	GUI_SetFont(&GUI_Font24B_ASCII);
-	GUI_SetTextMode(GUI_TM_TRANS);
-	GUI_DispStringHCenterAt("Alphablending", 100, 130);
-	GUI_EnableAlpha(0);
+	GUI_SetTextMode(GUI_TM_XOR);
+	GUI_DispStringHCenterAt("Alphablending", 100, 30);
 }
 int main(void)
 {

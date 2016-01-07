@@ -149,6 +149,9 @@ void polygon(void)
 	int i,x,y;
 	float a ;
 	char ac[4];
+	I16 aY[240];
+	int  Mag, magy = 50, Count = 4;
+	
 	const GUI_POINT aPoints[]={
 	{40,20},
 	{0,20},
@@ -162,16 +165,16 @@ void polygon(void)
 	const GUI_POINT aPointArrow[]={
 	{ 0, -5},
 	{-40, -35},
-	{-10, -25},
+	{-10, -35},
 	{-10, -85},
 	{ 10, -85},
-	{ 10, -25},
+	{ 10, -35},
 	{ 40, -35},
 	};
 	GUI_POINT aEnlargedPoints[GUI_COUNTOF(aPoints)];    //
 	GUI_POINT aMagnifiedPoints[GUI_COUNTOF(aPoints1)];
 
-
+//2D图形 矩形，渐变色矩形 圆角矩形 画圆  椭圆
 	GUI_SetBkColor(GUI_BLUE);    //
 	GUI_Clear();
 	GUI_SetColor(GUI_YELLOW);
@@ -199,7 +202,7 @@ void polygon(void)
 	GUI_FillEllipse(50,250,30,10);  
 	GUI_SetBkColor(GUI_WHITE);
 
-
+//仪表盘
 	GUI_SetBkColor(GUI_WHITE);
 	GUI_Clear();
 	GUI_SetPenSize( 5 );
@@ -226,6 +229,47 @@ void polygon(void)
 			GUI_DrawPoint(x,y);
 		}
 	}
+	
+	GUI_Clear();
+	
+	//线图
+	for(i=0;i<GUI_COUNTOF(aY);i++){
+		srand(i);
+		aY[i] = rand()%100;
+	}
+	GUI_ClearRect(0,0,240,320);    //????????????
+	GUI_DrawGraph(aY,GUI_COUNTOF(aY),0,150);
+	
+	GUI_Clear();
+	
+	//多边形
+	GUI_SetTextMode(GUI_TM_TRANS);  
+	GUI_SetFont(&GUI_Font16_ASCII); 
+	GUI_DispStringHCenterAt("ALIENTEK PLAYGON DISPLAY",120,10);
+	GUI_SetColor(GUI_WHITE);
+	GUI_SetDrawMode(GUI_DM_XOR);
+	GUI_FillPolygon(aPoints,GUI_COUNTOF(aPoints),140,110);//原点位置，终点连接起点
+	for(i=1;i<10;i++)
+	{
+		GUI_EnlargePolygon(aEnlargedPoints,aPoints,GUI_COUNTOF(aPoints),i * 3);//按照指定系数 全方位扩展多边形
+		GUI_FillPolygon(aEnlargedPoints,GUI_COUNTOF(aPoints),140,110);     
+	}
+	GUI_SetDrawMode(GUI_DM_NORMAL); 
+	GUI_SetColor(GUI_GREEN);
+	for (Mag = 1; Mag <= 4; Mag *= 2, Count /= 2) 
+	{
+		int magx = 10;
+		GUI_MagnifyPolygon(aMagnifiedPoints, aPoints, GUI_COUNTOF(aPoints), Mag); //放大多边形
+		for (i = Count; i > 0; i--, magx += 40 * Mag) {
+			GUI_FillPolygon(aMagnifiedPoints, GUI_COUNTOF(aPoints), magx, magy);//填充画多边形
+		}
+		magy += 50 * Mag;
+	}
+	GUI_SetFont(&GUI_Font8x16);
+	GUI_DispStringAt("Polygons of arbitrary shape ", 50, 300);
+	GUI_DispStringAt("in any color", 80, 220);
+	GUI_SetColor(GUI_DARKRED);
+	GUI_FillPolygon (&aPointArrow[0],7,120,320);
 }
 
 int main(void)
@@ -235,7 +279,7 @@ int main(void)
 //	disp();
 //	alpha();
 //	line();
-	polygon();
+	polygon();//多边形
 
 	OSInit();
 	OSTaskCreate(start_task,(void *)0,(OS_STK *)&START_TASK_STK[START_STK_SIZE-1],START_TASK_PRIO);//创建起始任务

@@ -163,13 +163,24 @@ void polygon(void)
 	{20,0}
 	};
 	const GUI_POINT aPointArrow[]={
+	{  0, -85},
+	{ 10, -85},
+	{ 10, -35},
+	{ 40, -35},
 	{ 0, -5},
 	{-40, -35},
 	{-10, -35},
 	{-10, -85},
-	{ 10, -85},
-	{ 10, -35},
-	{ 40, -35},
+	};
+	GUI_POINT aPointArrow1[]={
+	{ 80, -85},
+	{ 50, -45},
+	{ 50, -75},
+	{  0, -75},
+	{  0, -95},
+	{ 50, -95},
+	{ 50, -125},
+	{0,0}
 	};
 	GUI_POINT aEnlargedPoints[GUI_COUNTOF(aPoints)];    //
 	GUI_POINT aMagnifiedPoints[GUI_COUNTOF(aPoints1)];
@@ -270,6 +281,25 @@ void polygon(void)
 	GUI_DispStringAt("in any color", 80, 220);
 	GUI_SetColor(GUI_DARKRED);
 	GUI_FillPolygon (&aPointArrow[0],7,120,320);
+	
+	GUI_SetBkColor(GUI_DARKGREEN);
+	GUI_SetPenSize(10);
+	GUI_SetColor(GUI_DARKGREEN);
+	GUI_Clear(); 
+	GUI_SetColor(GUI_BLACK);
+
+	GUI_RotatePolygon(&aPointArrow1[0],&aPointArrow[0],GUI_COUNTOF(aPointArrow),0);
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow1),120,235);
+	for(i = 0; i <= 60;i++){
+	GUI_SetColor(GUI_DARKGREEN);
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,235);
+	GUI_SetColor(GUI_BLACK);
+	GUI_RotatePolygon(&aPointArrow1[0],&aPointArrow[0],GUI_COUNTOF(aPointArrow),6*i*3.1415926/180);//把旋转角度后的多边形数据计算出来并保存至目标处，然后调用显示
+																														//函数需要弧度，需将角度转化为弧度
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,235);
+	delay_ms(400);
+	}
+
 }
 
 int main(void)

@@ -10,6 +10,7 @@
 #include "GUI.h"
 #include "touch.h"
 #include "includes.h"
+#include "math.h"
 
 //ALIENTEK Mini STM32开发板范例代码27
 //内存管理实验  
@@ -145,57 +146,88 @@ void line(void)
 }
 void polygon(void)
 {
-	int i;
+	int i,x,y;
+	float a ;
+	char ac[4];
 	const GUI_POINT aPoints[]={
-{40,20},
-{0,20},
-{20,0}
-};
-const GUI_POINT aPoints1[]={
-{0,20},
-{40,20},
-{20,0}
-};
-const GUI_POINT aPointArrow[]={
-{ 0, -5},
-{-40, -35},
-{-10, -25},
-{-10, -85},
-{ 10, -85},
-{ 10, -25},
-{ 40, -35},
-};
-GUI_POINT aEnlargedPoints[GUI_COUNTOF(aPoints)];    //
-GUI_POINT aMagnifiedPoints[GUI_COUNTOF(aPoints1)];
+	{40,20},
+	{0,20},
+	{20,0}
+	};
+	const GUI_POINT aPoints1[]={
+	{0,20},
+	{40,20},
+	{20,0}
+	};
+	const GUI_POINT aPointArrow[]={
+	{ 0, -5},
+	{-40, -35},
+	{-10, -25},
+	{-10, -85},
+	{ 10, -85},
+	{ 10, -25},
+	{ 40, -35},
+	};
+	GUI_POINT aEnlargedPoints[GUI_COUNTOF(aPoints)];    //
+	GUI_POINT aMagnifiedPoints[GUI_COUNTOF(aPoints1)];
 
 
-GUI_SetBkColor(GUI_BLUE);    //
-GUI_Clear();
-GUI_SetColor(GUI_YELLOW);
-GUI_SetFont(&GUI_Font24_ASCII);
-GUI_DispStringHCenterAt("ALIENTEK 2D DISPALY",120,10);
-GUI_SetColor(GUI_RED);
-GUI_SetFont(&GUI_Font16_ASCII);
-GUI_SetBkColor(GUI_GREEN);
-GUI_ClearRect(10,50,100,100);  //
-GUI_SetBkColor(GUI_BLUE);    //
-GUI_DrawGradientH(110,50,210,100,0X4117BB,0XC6B6F5);
-GUI_DrawGradientV(10,110,100,150,0X4117BB,0XC6B6F5);
-GUI_DrawGradientRoundedH(120,120,150,150,5,0X4117BB,0XC6B6F5);
-GUI_DrawGradientRoundedV(10,160,120,200,5,0X4117BB,0XC6B6F5); 
-GUI_DrawRect(160,120,200,160);    
-GUI_FillRect(150,170,180,200);    //
-GUI_SetPenSize(5);        //
-GUI_DrawLine(10,160,110,260);      //
-for(i=0;i<50;i+=3) GUI_DrawCircle(170,220,i);    //
-GUI_FillCircle(200,130,10);         
-GUI_SetPenSize(2);
-GUI_SetColor(GUI_CYAN);
-GUI_DrawEllipse(50,240,40,20);
-GUI_SetColor(GUI_MAGENTA);
-GUI_FillEllipse(50,250,30,10);  
+	GUI_SetBkColor(GUI_BLUE);    //
+	GUI_Clear();
+	GUI_SetColor(GUI_YELLOW);
+	GUI_SetFont(&GUI_Font24_ASCII);
+	GUI_DispStringHCenterAt("ALIENTEK 2D DISPALY",120,10);
+	GUI_SetColor(GUI_RED);
+	GUI_SetFont(&GUI_Font16_ASCII);
+	GUI_SetBkColor(GUI_GREEN);
+	GUI_ClearRect(10,50,100,100);  //
+	GUI_SetBkColor(GUI_BLUE);    //
+	GUI_DrawGradientH(110,50,210,100,0X4117BB,0XC6B6F5);
+	GUI_DrawGradientV(10,110,100,150,0X4117BB,0XC6B6F5);
+	GUI_DrawGradientRoundedH(120,120,150,150,5,0X4117BB,0XC6B6F5);
+	GUI_DrawGradientRoundedV(10,160,120,200,5,0X4117BB,0XC6B6F5); 
+	GUI_DrawRect(160,120,200,160);    
+	GUI_FillRect(150,170,180,200);    //
+	GUI_SetPenSize(5);        //
+	GUI_DrawLine(10,160,110,260);      //
+	for(i=0;i<50;i+=3) GUI_DrawCircle(170,220,i);    //
+	GUI_FillCircle(200,130,10);         
+	GUI_SetPenSize(2);
+	GUI_SetColor(GUI_CYAN);
+	GUI_DrawEllipse(50,240,40,20);
+	GUI_SetColor(GUI_MAGENTA);
+	GUI_FillEllipse(50,250,30,10);  
+	GUI_SetBkColor(GUI_WHITE);
 
+
+	GUI_SetBkColor(GUI_WHITE);
+	GUI_Clear();
+	GUI_SetPenSize( 5 );
+	GUI_SetTextMode(GUI_TM_TRANS);
+	GUI_SetFont(&GUI_FontComic18B_ASCII);
+	GUI_SetColor(GUI_BLACK);
+	GUI_DrawArc( 120,180,100,100,0,180);
+	GUI_DrawPoint(120,180);
+
+	for (i=0; i<= 18;i++) {
+		a = (i*10)*3.1415926/180;
+		x = -100*cos(a)+120;
+		y = -141*sin(a)+180;
+		if (i%2 == 0){
+			GUI_SetPenSize( 5 );
+			GUI_DrawPoint(x,y);
+			x = -123*cos(a)+120;
+			y = -130*sin(a)+180;
+			sprintf(ac, "%d", i*10);
+			GUI_SetTextAlign(GUI_TA_VCENTER);
+			GUI_DispStringHCenterAt(ac,x,y);
+		}else{
+			GUI_SetPenSize( 4 );
+			GUI_DrawPoint(x,y);
+		}
+	}
 }
+
 int main(void)
 {
 	BSP_Init();

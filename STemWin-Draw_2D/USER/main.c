@@ -151,6 +151,9 @@ void polygon(void)
 	char ac[4];
 	I16 aY[240];
 	int  Mag, magy = 50, Count = 4;
+		int a0, a1;
+const unsigned aValues[] = { 100, 135, 190, 240, 340, 360};
+const GUI_COLOR aColors[] = { GUI_BLUE, GUI_GREEN, GUI_RED,GUI_CYAN, GUI_MAGENTA, GUI_YELLOW };
 	
 	const GUI_POINT aPoints[]={
 	{40,20},
@@ -281,25 +284,34 @@ void polygon(void)
 	GUI_DispStringAt("in any color", 80, 220);
 	GUI_SetColor(GUI_DARKRED);
 	GUI_FillPolygon (&aPointArrow[0],7,120,320);
-	
+	//旋转多边形
 	GUI_SetBkColor(GUI_DARKGREEN);
 	GUI_SetPenSize(10);
 	GUI_SetColor(GUI_DARKGREEN);
 	GUI_Clear(); 
 	GUI_SetColor(GUI_BLACK);
-
+	
 	GUI_RotatePolygon(&aPointArrow1[0],&aPointArrow[0],GUI_COUNTOF(aPointArrow),0);
-	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow1),120,235);
-	for(i = 0; i <= 60;i++){
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow1),120,250);
+	for(i = 0; i <= 360;i++){
 	GUI_SetColor(GUI_DARKGREEN);
-	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,235);
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,250);//以底色画图，清除原有图案,擦除功能
 	GUI_SetColor(GUI_BLACK);
 	GUI_RotatePolygon(&aPointArrow1[0],&aPointArrow[0],GUI_COUNTOF(aPointArrow),6*i*3.1415926/180);//把旋转角度后的多边形数据计算出来并保存至目标处，然后调用显示
 																														//函数需要弧度，需将角度转化为弧度
-	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,235);
-	delay_ms(400);
+	GUI_FillPolygon (&aPointArrow1[0],GUI_COUNTOF(aPointArrow),120,250);
+	delay_ms(20);
 	}
-
+	//绘制圆形扇区
+	GUI_SetBkColor(GUI_WHITE);
+	GUI_Clear();
+	for (i = 0; i < GUI_COUNTOF(aValues); i++) {
+		a0 = (i == 0) ?0 :aValues[i - 1];
+		a1 = aValues[i];
+		GUI_SetColor(aColors[i]);
+		GUI_DrawPie(100, 100, 50, a0, a1, 0);//指定圆心，半径，起始角度，终止角度，默认0
+		delay_ms(200);
+	}
 }
 
 int main(void)
